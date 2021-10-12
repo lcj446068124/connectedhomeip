@@ -27,7 +27,7 @@ namespace device {
 /**
  * This struct contains device specific parameters that are needed to establish a secure session. The
  * pointers passed in are not owned by this object and should have a lifetime beyond this object.
-*/
+ */
 struct OperationalDeviceProxyInitParams
 {
     SessionManager * sessionManager          = nullptr;
@@ -42,7 +42,8 @@ class OperationalDeviceProxy;
 // class. When that happens, the type of the last param for this callback may change as the registrar of this
 // callback would need to be able to associate the peer device with the cluster command being setn.
 typedef void (*OnOperationalDeviceConnected)(void * context, OperationalDeviceProxy * operationalDeviceProxy);
-typedef void (*OnOperationalDeviceConnectionFailure)(void * context, OperationalDeviceProxy * operationalDeviceProxy, CHIP_ERROR error);
+typedef void (*OnOperationalDeviceConnectionFailure)(void * context, OperationalDeviceProxy * operationalDeviceProxy,
+                                                     CHIP_ERROR error);
 
 /**
  * @class OperationalDeviceProxy
