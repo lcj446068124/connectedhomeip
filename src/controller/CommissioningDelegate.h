@@ -79,6 +79,20 @@ struct CompletionStatus
 };
 
 constexpr uint16_t kDefaultFailsafeTimeout = 60;
+
+enum class CommissioningPairingMode
+{
+    None,
+    QRCode,
+    ManualCode,
+    QRCodePaseOnly,
+    ManualCodePaseOnly,
+    Ble,
+    SoftAP,
+    Ethernet,
+    OnNetwork,
+};
+
 class CommissioningParameters
 {
 public:
@@ -346,8 +360,14 @@ public:
 
     Credentials::DeviceAttestationDelegate * GetDeviceAttestationDelegate() const { return mDeviceAttestationDelegate; }
 
+    CommissioningPairingMode getPairingMode() { return mPairingMode; }
+
+    void setPairingMode(int mode) { mPairingMode = static_cast<CommissioningPairingMode>(mode); }
+
 private:
     // Items that can be set by the commissioner
+
+    CommissioningPairingMode mPairingMode;
     Optional<uint16_t> mFailsafeTimerSeconds;
     Optional<app::Clusters::GeneralCommissioning::RegulatoryLocationType> mDeviceRegulatoryLocation;
     Optional<ByteSpan> mCSRNonce;
