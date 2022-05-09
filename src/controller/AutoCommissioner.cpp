@@ -22,7 +22,6 @@
 #include <controller/CHIPDeviceController.h>
 #include <credentials/CHIPCert.h>
 #include <lib/support/SafeInt.h>
-
 namespace chip {
 namespace Controller {
 
@@ -350,6 +349,11 @@ CHIP_ERROR AutoCommissioner::StartCommissioning(DeviceCommissioner * commissione
     mNeedsNetworkSetup =
         mCommissioneeDeviceProxy->GetSecureSession().Value()->AsSecureSession()->GetPeerAddress().GetTransportType() ==
         Transport::Type::kBle;
+    CommissioningPairingMode pairingMode = mParams.getPairingMode();
+    if (pairingMode == CommissioningPairingMode::SoftAP)
+    {
+        mNeedsNetworkSetup = true;
+    }
     CHIP_ERROR err               = CHIP_NO_ERROR;
     CommissioningStage nextStage = GetNextCommissioningStage(CommissioningStage::kSecurePairing, err);
     mCommissioner->PerformCommissioningStep(mCommissioneeDeviceProxy, nextStage, mParams, this, GetEndpoint(nextStage),
