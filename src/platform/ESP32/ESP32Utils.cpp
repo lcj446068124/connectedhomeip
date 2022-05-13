@@ -130,6 +130,7 @@ CHIP_ERROR ESP32Utils::EnableStationMode(void)
         return ESP32Utils::MapError(err);
     }
 
+    ChipLogProgress(DeviceLayer, "curWiFiMode: %s", WiFiModeToStr(curWiFiMode));
     // If station mode is not already enabled (implying the current mode is WIFI_MODE_AP), change
     // the mode to WIFI_MODE_APSTA.
     if (curWiFiMode == WIFI_MODE_AP)

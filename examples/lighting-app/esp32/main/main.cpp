@@ -78,14 +78,6 @@ static void InitServer(intptr_t context)
 #if CHIP_DEVICE_CONFIG_ENABLE_WIFI
     sWiFiNetworkCommissioningInstance.Init();
 #endif
-#if CHIP_DEVICE_CONFIG_ENABLE_THREAD
-    if (chip::DeviceLayer::ConnectivityMgr().IsThreadProvisioned() &&
-        (chip::Server::GetInstance().GetFabricTable().FabricCount() != 0))
-    {
-        ESP_LOGI(TAG, "Thread has been provisioned, publish the dns service now");
-        chip::app::DnssdServer::Instance().StartServer();
-    }
-#endif
 }
 
 extern "C" void app_main()
@@ -118,18 +110,6 @@ extern "C" void app_main()
         ESP_LOGE(TAG, "device.Init() failed: %s", ErrorStr(error));
         return;
     }
-#if CHIP_DEVICE_CONFIG_ENABLE_THREAD
-    if (ThreadStackMgr().InitThreadStack() != CHIP_NO_ERROR)
-    {
-        ESP_LOGE(TAG, "Failed to initialize Thread stack");
-        return;
-    }
-    if (ThreadStackMgr().StartThreadTask() != CHIP_NO_ERROR)
-    {
-        ESP_LOGE(TAG, "Failed to launch Thread task");
-        return;
-    }
-#endif
     AppLED.Init();
 
     chip::DeviceLayer::PlatformMgr().ScheduleWork(InitServer, reinterpret_cast<intptr_t>(nullptr));

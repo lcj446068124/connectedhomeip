@@ -101,8 +101,14 @@ CHIP_ERROR GenericPlatformManagerImpl<ImplClass>::_InitChipStack()
     SuccessOrExit(err);
 #endif
 
+    ChipLogError(DeviceLayer, "ConnectivityMgr().Init() bf");
+    ChipLogError(DeviceLayer, "ConnectivityMgr().Init() bf");
+    ChipLogError(DeviceLayer, "ConnectivityMgr().Init() bf");
     // Initialize the Connectivity Manager object.
     err = ConnectivityMgr().Init();
+    ChipLogError(DeviceLayer, "ConnectivityMgr().Init()");
+    ChipLogError(DeviceLayer, "ConnectivityMgr().Init()");
+    ChipLogError(DeviceLayer, "ConnectivityMgr().Init()");
     if (err != CHIP_NO_ERROR)
     {
         ChipLogError(DeviceLayer, "Connectivity Manager initialization failed: %s", ErrorStr(err));

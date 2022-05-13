@@ -452,6 +452,8 @@ void Instance::OnResult(Status commissioningError, CharSpan debugText, int32_t i
     }
     if (commissioningError == Status::kSuccess)
     {
+        // DeviceLayer::ConnectivityMgr().SetWiFiAPMode(DeviceLayer::ConnectivityManager::kWiFiAPMode_Disabled);
+        ChipLogError(Zcl, "connect success");
         DeviceLayer::DeviceControlServer::DeviceControlSvr().ConnectNetworkForOperational(
             ByteSpan(mLastNetworkID, mLastNetworkIDLen));
         mLastConnectErrorValue.SetNull();
@@ -612,8 +614,12 @@ void Instance::OnCommissioningComplete()
 {
     VerifyOrReturn(mpWirelessDriver != nullptr);
 
+    ChipLogError(Zcl, "OnCommissioningComplete");
+    ChipLogError(Zcl, "OnCommissioningComplete");
+    ChipLogError(Zcl, "OnCommissioningComplete");
     ChipLogDetail(Zcl, "Commissioning complete, notify platform driver to persist network credentials.");
     mpWirelessDriver->CommitConfiguration();
+    DeviceLayer::ConnectivityMgr().SetWiFiAPMode(DeviceLayer::ConnectivityManager::kWiFiAPMode_Disabled);
 }
 
 void Instance::OnFailSafeTimerExpired()

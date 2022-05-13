@@ -392,7 +392,6 @@ CHIP_ERROR ConnectivityManagerImpl::InitWiFi()
 
     // Ensure that ESP station mode is enabled.
     ReturnErrorOnFailure(Internal::ESP32Utils::EnableStationMode());
-
     // If there is no persistent station provision...
     if (!IsWiFiStationProvisioned())
     {
@@ -423,6 +422,7 @@ CHIP_ERROR ConnectivityManagerImpl::InitWiFi()
         // Otherwise, ensure WiFi station mode is disabled.
         else
         {
+
             ReturnErrorOnFailure(SetWiFiStationMode(kWiFiStationMode_Disabled));
         }
     }
@@ -434,6 +434,10 @@ CHIP_ERROR ConnectivityManagerImpl::InitWiFi()
     ReturnErrorOnFailure(DeviceLayer::SystemLayer().ScheduleWork(DriveStationState, NULL));
     ReturnErrorOnFailure(DeviceLayer::SystemLayer().ScheduleWork(DriveAPState, NULL));
 
+    ChipLogProgress(DeviceLayer, "WiFi station state now:%s", WiFiStationStateToStr(mWiFiStationState));
+    ChipLogProgress(DeviceLayer, "WiFi station mode now:%s", WiFiStationModeToStr(mWiFiStationMode));
+    ChipLogProgress(DeviceLayer, "WiFi AP state now:%s", WiFiAPStateToStr(mWiFiAPState));
+    ChipLogProgress(DeviceLayer, "WiFi AP mode now:%s", WiFiAPModeToStr(mWiFiAPMode));
     return CHIP_NO_ERROR;
 }
 
@@ -908,7 +912,6 @@ exit:
 CHIP_ERROR ConnectivityManagerImpl::ConfigureWiFiAP()
 {
     wifi_config_t wifiConfig;
-
     memset(&wifiConfig, 0, sizeof(wifiConfig));
 
     uint16_t discriminator;
