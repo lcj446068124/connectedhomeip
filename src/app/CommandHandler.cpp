@@ -31,6 +31,7 @@
 #include <app-common/zap-generated/cluster-objects.h>
 #include <app/RequiredPrivilege.h>
 #include <app/util/MatterCallbacks.h>
+#include <assert.h>
 #include <credentials/GroupDataProvider.h>
 #include <lib/core/CHIPTLVUtilities.hpp>
 #include <lib/support/TypeTraits.h>
@@ -39,7 +40,7 @@
 namespace chip {
 namespace app {
 
-CommandHandler::CommandHandler(Callback * apCallback) : mpCallback(apCallback), mSuppressResponse(false) {}
+CommandHandler::CommandHandler(Callback * apCallback) : mConcretePath(0, 0, 0), mpCallback(apCallback), mSuppressResponse(false) {}
 
 CHIP_ERROR CommandHandler::AllocateBuffer()
 {
@@ -210,6 +211,7 @@ void CommandHandler::DecrementHoldOff()
     }
     else
     {
+        // assert(false);
         CHIP_ERROR err = SendCommandResponse();
         if (err != CHIP_NO_ERROR)
         {
@@ -264,6 +266,10 @@ CHIP_ERROR CommandHandler::ProcessCommandDataIB(CommandDataIB::Parser & aCommand
 
     err = commandPath.GetEndpointId(&concretePath.mEndpointId);
     SuccessOrExit(err);
+
+    mConcretePath.mClusterId  = concretePath.mClusterId;
+    mConcretePath.mCommandId  = concretePath.mCommandId;
+    mConcretePath.mEndpointId = concretePath.mEndpointId;
 
     using Protocols::InteractionModel::Status;
     {

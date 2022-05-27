@@ -228,6 +228,7 @@ public:
     Messaging::ExchangeContext * GetExchangeContext() const { return mpExchangeCtx; }
 
     Access::SubjectDescriptor GetSubjectDescriptor() const { return mpExchangeCtx->GetSessionHandle()->GetSubjectDescriptor(); }
+    ConcreteCommandPath mConcretePath;
 
 private:
     friend class TestCommandInteraction;

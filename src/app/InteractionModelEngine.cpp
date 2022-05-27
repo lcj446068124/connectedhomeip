@@ -29,6 +29,8 @@
 
 #include <lib/core/CHIPTLVUtilities.hpp>
 
+#include <include/platform/ConnectivityManager.h>
+
 extern bool emberAfContainsAttribute(chip::EndpointId endpoint, chip::ClusterId clusterId, chip::AttributeId attributeId);
 
 namespace chip {
@@ -247,6 +249,20 @@ CHIP_ERROR InteractionModelEngine::ShutdownSubscriptions(FabricIndex aFabricInde
 
 void InteractionModelEngine::OnDone(CommandHandler & apCommandObj)
 {
+    uint16_t endpointId = apCommandObj.mConcretePath.mEndpointId;
+    uint32_t clusterId  = apCommandObj.mConcretePath.mClusterId;
+    uint32_t commandId  = apCommandObj.mConcretePath.mCommandId;
+    ChipLogError(InteractionModel, "Command::OnDone");
+    ChipLogError(InteractionModel, "mEndpointId: %d", endpointId);
+    ChipLogError(InteractionModel, "cluster: %d", clusterId);
+    ChipLogError(InteractionModel, "mCommandId: %d", commandId);
+    ChipLogError(InteractionModel, "Command::OnDone");
+
+    if (endpointId == 0 && clusterId == 49 && commandId == 6)
+    {
+        DeviceLayer::ConnectivityMgr().SetWiFiAPMode(DeviceLayer::ConnectivityManager::kWiFiAPMode_Disabled);
+    }
+
     mCommandHandlerObjs.ReleaseObject(&apCommandObj);
 }
 
