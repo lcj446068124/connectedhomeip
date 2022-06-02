@@ -17,6 +17,7 @@
  */
 #pragma once
 
+#include "esp_log.h"
 #include <app/util/af-types.h>
 #include <common/CHIPDeviceManager.h>
 #include <platform/CHIPDeviceLayer.h>

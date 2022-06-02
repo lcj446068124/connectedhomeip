@@ -92,10 +92,8 @@ constexpr System::Clock::Timeout kMinimumCommissioningStepTimeout = System::Cloc
 enum class CommissioningPairingMode
 {
     None,
-    QRCode,
-    ManualCode,
-    QRCodePaseOnly,
-    ManualCodePaseOnly,
+    Code,
+    CodePaseOnly,
     Ble,
     SoftAP,
     Ethernet,
@@ -399,6 +397,7 @@ public:
         mSkipCommissioningComplete = MakeOptional(skipCommissioningComplete);
         return *this;
     }
+    
     CommissioningPairingMode getPairingMode() { return mPairingMode; }
 
     void setPairingMode(int mode) { mPairingMode = static_cast<CommissioningPairingMode>(mode); }
