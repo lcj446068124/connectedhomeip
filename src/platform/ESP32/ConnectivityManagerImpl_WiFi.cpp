@@ -20,6 +20,7 @@
 #include <platform/internal/CHIPDeviceLayerInternal.h>
 
 #include <platform/CommissionableDataProvider.h>
+#include <platform/ConfigurationManager.h>
 #include <platform/ConnectivityManager.h>
 
 #include <lib/support/CodeUtils.h>
@@ -922,6 +923,7 @@ exit:
     }
 }
 
+// set AP name
 CHIP_ERROR ConnectivityManagerImpl::ConfigureWiFiAP()
 {
     wifi_config_t wifiConfig;
@@ -929,6 +931,7 @@ CHIP_ERROR ConnectivityManagerImpl::ConfigureWiFiAP()
     memset(&wifiConfig, 0, sizeof(wifiConfig));
 
     uint16_t discriminator;
+
     ReturnErrorOnFailure(GetCommissionableDataProvider()->GetSetupDiscriminator(discriminator));
 
     uint16_t vendorId;

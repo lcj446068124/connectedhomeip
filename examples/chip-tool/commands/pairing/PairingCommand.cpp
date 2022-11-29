@@ -70,17 +70,23 @@ CHIP_ERROR PairingCommand::RunInternal(NodeId remoteId)
 
 CommissioningParameters PairingCommand::GetCommissioningParameters()
 {
+    auto mCommissioningParameters = CommissioningParameters();
+    mCommissioningParameters.setPairingMode(static_cast<int>(mPairingMode));
     switch (mNetworkType)
     {
-    case PairingNetworkType::WiFi:
-        return CommissioningParameters().SetWiFiCredentials(Controller::WiFiCredentials(mSSID, mPassword));
-    case PairingNetworkType::Thread:
-        return CommissioningParameters().SetThreadOperationalDataset(mOperationalDataset);
+    case PairingNetworkType::WiFi: {
+        mCommissioningParameters.SetWiFiCredentials(Controller::WiFiCredentials(mSSID, mPassword));
+        return mCommissioningParameters;
+    }
+    case PairingNetworkType::Thread: {
+        mCommissioningParameters.SetThreadOperationalDataset(mOperationalDataset);
+        return mCommissioningParameters;
+    }
     case PairingNetworkType::Ethernet:
     case PairingNetworkType::None:
-        return CommissioningParameters();
+        return mCommissioningParameters;
     }
-    return CommissioningParameters();
+    return mCommissioningParameters;
 }
 
 CHIP_ERROR PairingCommand::PaseWithCode(NodeId remoteId)

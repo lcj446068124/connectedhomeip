@@ -90,6 +90,17 @@ constexpr uint16_t kDefaultFailsafeTimeout = 60;
 // a 30s timeout.
 constexpr System::Clock::Timeout kMinimumCommissioningStepTimeout = System::Clock::Seconds16(30);
 
+enum class CommissioningPairingMode
+{
+    None,
+    Code,
+    CodePaseOnly,
+    Ble,
+    SoftAP,
+    Ethernet,
+    OnNetwork,
+};
+
 class CommissioningParameters
 {
 public:
@@ -396,6 +407,10 @@ public:
         mSkipCommissioningComplete = MakeOptional(skipCommissioningComplete);
         return *this;
     }
+    
+    CommissioningPairingMode getPairingMode() { return mPairingMode; }
+
+    void setPairingMode(int mode) { mPairingMode = static_cast<CommissioningPairingMode>(mode); }
 
     // Check for matching fabric on target device by reading fabric list and looking for a
     // fabricId and RootCert match. If a match is detected, then use GetNodeId() to
@@ -409,6 +424,8 @@ public:
 
 private:
     // Items that can be set by the commissioner
+
+    CommissioningPairingMode mPairingMode;
     Optional<uint16_t> mFailsafeTimerSeconds;
     Optional<app::Clusters::GeneralCommissioning::RegulatoryLocationType> mDeviceRegulatoryLocation;
     Optional<ByteSpan> mCSRNonce;
